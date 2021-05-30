@@ -903,13 +903,15 @@ def spgl1(A, b, tau=0, sigma=0, x0=None, fid=None, verbosity=0,
 
     # Quick exit if sigma >= ||b||.  Set tau = 0 to short-circuit the loop.
     if bnorm <= sigma:
-        logger.warning('W: sigma >= ||b||.  Exact solution is x = 0.')
+        if verbosity > 0:
+            logger.warning('W: sigma >= ||b||.  Exact solution is x = 0.')
         tau = 0
         single_tau = True
 
     # Do not do subspace minimization if x is complex.
     if not realx and subspace_min:
-        logger.warning('W: Subspace minimization disabled when variables are complex.')
+        if verbosity > 0:
+            logger.warning('W: Subspace minimization disabled when variables are complex.')
         subspace_min = False
 
     #% Pre-allocate iteration info vectors
@@ -1139,10 +1141,11 @@ def spgl1(A, b, tau=0, sigma=0, x0=None, fid=None, verbosity=0,
                     if max_line_errors <= 0:
                         stat = EXIT_LINE_ERROR
                     else:
-                        step_max = step_max / 10.
-                        logger.warning('Linesearch failed with error %s. '
-                                       'Damping max BB scaling to %s', lnerr,
-                                       step_max)
+                        step_max = step_max / 10.0
+                        if verbosity > 0:
+                            logger.warning('Linesearch failed with error %s. '
+                                        'Damping max BB scaling to %s', lnerr,
+                                        step_max)
                         max_line_errors -= 1
 
             # Subspace minimization (only if active-set change is small).
