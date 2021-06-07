@@ -1,8 +1,6 @@
 from __future__ import division
 import numpy as np
-from numba import njit
 
-@njit(nogil=True, cache=True)
 def lsqr( m, n, Aprod, b, damp, atol, btol, conlim, itnlim, show ):
 # // %
 # // % LSQR solves  Ax = b  or  min ||b - Ax||_2  if damp = 0,
